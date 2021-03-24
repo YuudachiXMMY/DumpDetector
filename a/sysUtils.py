@@ -116,3 +116,12 @@ def searchLog(starting_time):
             return f
         c = c + datetime.timedelta(minutes=1)
     return f
+
+def main():
+    '''
+    '''
+    print("NOTHING TO BE RUN")
+    pass
+
+if __name__ == '__main__':
+    main()
