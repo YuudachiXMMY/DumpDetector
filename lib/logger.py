@@ -19,7 +19,7 @@ def logger(logName, dir=''):
         logger.setLevel(logging.NOTSET)
         # 第二步，创建一个handler，用于写入日志文件
         rq = time.strftime('%Y-%m-%d-%H.%M.%S', time.localtime(time.time()))
-        log_path = os.path.dirname(os.getcwd()) + '/Logs/' + rq
+        log_path = os.path.dirname(os.getcwd()) + '\\DumpDetector\\Logs\\' + rq
 
         if dir != '':
             log_path = log_path + '/' + dir + '/'
@@ -29,7 +29,7 @@ def logger(logName, dir=''):
             # 创建目录操作函数
             os.makedirs(log_path)
 
-        fh = logging.FileHandler(log_path + logName + '.log', mode='w')
+        fh = logging.FileHandler(log_path + "_" + logName + '.log', mode='w')
         fh.setLevel(logging.DEBUG) # 输出到file的log等级的开关
         ch = logging.StreamHandler()
         ch.setLevel(logging.WARNING)  # 输出到console的log等级的开关

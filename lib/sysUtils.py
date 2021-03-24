@@ -52,7 +52,7 @@ def copyFolder(start, dest):
                 os.makedirs(dest_name)
             copyFolder(start_name, dest_name)
 
-    logger.info("Copy Finished! from", start, "to", dest)
+    logger.info("Copy Finished! from "+start+" to "+dest)
     # TODO: cmd command=> xcopy /s/e "D:\A_FOLDER" "E:\B_FOLDER\"
 
 def searchFolder(pathname, foldername, recursive=False):
