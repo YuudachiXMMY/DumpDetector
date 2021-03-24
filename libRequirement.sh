@@ -1,2 +1,1 @@
-pip install re
-pip install subprocess
+pip install pysmb
