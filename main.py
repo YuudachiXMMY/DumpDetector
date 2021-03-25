@@ -8,6 +8,9 @@ from smb.SMBConnection import SMBConnection
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.append(BASE_DIR)
 import lib.sysUtils as u
+import lib.logger
+
+logger = lib.logger.logger("main")
 
 # Show Usage demo of this program
 DEMO = False
@@ -29,18 +32,22 @@ def CMDParam():
                             (default: show a user interface)")
     ARGS = parser.parse_args() == 1
 
-def copy(start, dest, keyword="", fullCopy=True):
+def copy(src, dst, keyword="", fullCopy=True):
     '''
-    Copy all matched files and folders from start to dest
+    Copy all matched files and folders from src to dst
 
     @param:
-        - start - a folder names to be copied.
-        - dest - a folder names to copy from start to.
+        - src - a folder names to be copied.
+        - dst - a folder names to copy from src to.
         - keyword - a keyword to operate all matched target(can be regular expression).
         - full - True to fully copy; otherwise, copy increased file (default to True).
     '''
-    for name in u.searchFolder(start, keyword):
-        u.copyFolder(name, dest, full=fullCopy)
+    for name in u.searchFolder(src, keyword):
+        src_name = os.path.join(src, name)
+        dst_name = os.path.join(dst, name)
+        if not os.path.isdir(dst_name):
+            logger.info("New Version Found!: "+dst_name)
+        u.copyFolder(name, dst, full=fullCopy)
 
 def main():
     '''
@@ -66,16 +73,19 @@ def main():
 
     # Auto_Program = int(input("Start with Auto Program?(\"1\":True; \"0\":False):"))==1
     # if Auto_Program:
-    print("Running Auto-Sync\n")
-    src = input("Input source folder to be copied: ")
-    dst = input("Input dest folder to copy to: ")
-    keyword = input("Input keyword to search(can be Regular Expression): ")
-    fullCopy = int(input("Increasing Copy?(\"1\":True; \"0\":False): "))==0
-    timer = int(input("Auto-Syncing Time Period (in seconds):"))
-    while True:
-        copy(src, dst, keyword, fullCopy)
-        print("Waiting for %s seconds..."%timer)
-        time.sleep(timer)
+    try:
+        print("\n***** Running Auto-Sync *****\n")
+        src = input("Input source folder to be copied: ")
+        dst = input("Input dest folder to copy to: ")
+        keyword = input("Input keyword to search(can be Regular Expression): ")
+        fullCopy = int(input("Increasing Copy?(\"1\":True; \"0\":False): "))==0
+        timer = int(input("Auto-Syncing Time Period (in seconds):"))
+        while True:
+            copy(src, dst, keyword, fullCopy)
+            print("Waiting for %s seconds..."%timer)
+            time.sleep(timer)
+    except Exception:
+        print("ERROR OCCURRED!\n")
 
     print("Program finished!")
     input("PRESS ANYKEY TO QUIT:")
