@@ -1,4 +1,5 @@
 import os, sys
+import time
 
 import argparse
 
@@ -54,13 +55,29 @@ def main():
         # Copy folders from server(mapped network device)
         copy("A:\Dumps", "a", "AMDVer_27_20_14527_2002")
 
-    while(True):
+    Manual_Program = int(input("Start with Manually Input Program?(\"1\":True; \"0\":False):"))==1
+    while Manual_Program:
         src = input("Input source folder to be copied: ")
         dst = input("Input dest folder to copy to: ")
         keyword = input("Input keyword to search(can be Regular Expression): ")
         fullCopy = int(input("Increasing Copy?(\"1\":True; \"0\":False): "))==1
         copy(src, dst, keyword, fullCopy)
         print("Finished!\n")
+
+    Auto_Program = int(input("Start with Auto Program?(\"1\":True; \"0\":False):"))==1
+    if Auto_Program:
+        src = input("Input source folder to be copied: ")
+        dst = input("Input dest folder to copy to: ")
+        keyword = input("Input keyword to search(can be Regular Expression): ")
+        fullCopy = int(input("Increasing Copy?(\"1\":True; \"0\":False): "))==1
+        timer = int(input("Auto-Syncing Time Period (in seconds):"))
+        while True:
+            copy(src, dst, keyword, fullCopy)
+            print("Waiting for %s seconds..."%timer)
+            time.sleep(timer)
+
+    print("Program finished!")
+    input("PRESS ANYKEY TO QUIT:")
 
 if __name__ == "__main__":
     main()
