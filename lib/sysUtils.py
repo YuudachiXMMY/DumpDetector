@@ -61,14 +61,14 @@ def copyFolder(src, dst, full=True, md5file="./lib/md5.data"):
         - full - True to fully copy; otherwise, copy increased file (default to True).
         - md5file - a dump file that can be utilized to check md5 codes (default file:"./lib/md5.data").
     '''
-    logger.info("Copying Folders from"+src+"to"+dst+"...")
+    logger.debug("Copying Folders from"+src+"to"+dst+"...")
 
     if not os.path.isdir(src):
         logger.warn("src Folder not found: %s..."%src)
         return
     if not os.path.isdir(dst):
         logger.warn("dst Folder not found!")
-        logger.info("New Folder Created: %s..."%src)
+        logger.debug("New Folder Created: %s..."%src)
         os.makedirs(dst)
 
     md5new = {}
@@ -93,8 +93,8 @@ def copyFolder(src, dst, full=True, md5file="./lib/md5.data"):
         else:
             if not os.path.isdir(dst_name):
                 os.makedirs(dst_name)
+                logger.info("Copied folder:"+dst_name)
             copyFolder(src_name, dst_name)
-            logger.info("Copied file:"+dst_name)
 
     logger.info("Copy Finished! from "+src+" to "+dst)
     # TODO: cmd command=> xcopy /s/e "D:\A_FOLDER" "E:\B_FOLDER\"

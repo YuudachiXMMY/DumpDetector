@@ -84,17 +84,17 @@ def copyFolder(src, dst, full=True, md5file="./lib/md5.data"):
                 if (full and getMD5(src_name) != getMD5(dst_name)) or \
                     (not full and not isInMD5Dump(src_name, dst_name, md5file)):
                     shutil.copy(src_name, dst_name)
-                    logger.info("Copied file:"+dst_name+"from"+src_name)
+                    logger.info("Copied file:"+dst_name)
             else:
                 if full or \
                     (not full and not isInMD5Dump(src_name, dst_name, md5file)):
                     shutil.copy(src_name, dst_name)
-                    logger.info("Copied file:"+dst_name+"from"+src_name)
+                    logger.info("Copied file:"+dst_name)
         else:
             if not os.path.isdir(dst_name):
                 os.makedirs(dst_name)
             copyFolder(src_name, dst_name)
-            logger.info("Copied file:"+dst_name+"from"+src_name)
+            logger.info("Copied file:"+dst_name)
 
     logger.info("Copy Finished! from "+src+" to "+dst)
     # TODO: cmd command=> xcopy /s/e "D:\A_FOLDER" "E:\B_FOLDER\"

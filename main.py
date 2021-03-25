@@ -70,7 +70,7 @@ def main():
     src = input("Input source folder to be copied: ")
     dst = input("Input dest folder to copy to: ")
     keyword = input("Input keyword to search(can be Regular Expression): ")
-    fullCopy = int(input("Increasing Copy?(\"1\":True; \"0\":False): "))==1
+    fullCopy = int(input("Increasing Copy?(\"1\":True; \"0\":False): "))==0
     timer = int(input("Auto-Syncing Time Period (in seconds):"))
     while True:
         copy(src, dst, keyword, fullCopy)

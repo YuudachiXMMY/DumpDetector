@@ -34,7 +34,7 @@ def logger(logName, dir=''):
         ch = logging.StreamHandler()
         ch.setLevel(logging.DEBUG)  # 输出到console的log等级的开关
         # 第三步，定义handler的输出格式
-        formatter = logging.Formatter("%(asctime)s %(levelname)s: %(message)s")
+        formatter = logging.Formatter("%(asctime)s %(message)s")
         fh.setFormatter(formatter)
         # 第四步，将logger添加到handler里面
         logger.addHandler(fh)
