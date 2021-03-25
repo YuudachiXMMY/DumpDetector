@@ -61,7 +61,7 @@ def copyFolder(src, dst, full=True, md5file="./lib/md5.data"):
         - full - True to fully copy; otherwise, copy increased file (default to True).
         - md5file - a dump file that can be utilized to check md5 codes (default file:"./lib/md5.data").
     '''
-    logger.info("Copying Folders: %s..."%src)
+    logger.info("Copying Folders from"+src+"to"+dst+"...")
 
     if not os.path.isdir(src):
         logger.warn("src Folder not found: %s..."%src)
@@ -76,7 +76,7 @@ def copyFolder(src, dst, full=True, md5file="./lib/md5.data"):
     for files in os.listdir(src):
         src_name = os.path.join(src, files)
         dst_name = os.path.join(dst, files)
-        print(src, dst, files)
+        # print(src, dst, files)
         if os.path.isfile(src_name):
             addMD5Dump(src_name, dst_name, md5file)
             if os.path.isfile(dst_name):
@@ -84,14 +84,17 @@ def copyFolder(src, dst, full=True, md5file="./lib/md5.data"):
                 if (full and getMD5(src_name) != getMD5(dst_name)) or \
                     (not full and not isInMD5Dump(src_name, dst_name, md5file)):
                     shutil.copy(src_name, dst_name)
+                    logger.info("Copied file:"+dst_name+"from"+src_name)
             else:
                 if full or \
                     (not full and not isInMD5Dump(src_name, dst_name, md5file)):
                     shutil.copy(src_name, dst_name)
+                    logger.info("Copied file:"+dst_name+"from"+src_name)
         else:
             if not os.path.isdir(dst_name):
                 os.makedirs(dst_name)
             copyFolder(src_name, dst_name)
+            logger.info("Copied file:"+dst_name+"from"+src_name)
 
     logger.info("Copy Finished! from "+src+" to "+dst)
     # TODO: cmd command=> xcopy /s/e "D:\A_FOLDER" "E:\B_FOLDER\"
@@ -108,14 +111,14 @@ def searchFolder(pathname, foldername, recursive=False):
     @RETURN:
         - A list of sting representing all matched folder names
     '''
-    logger.info("Searching Folders: %s..."%foldername)
+    logger.debug("Searching Folders: %s..."%foldername)
 
     matchedFolder =[]
     for name in os.listdir(pathname):
         if re.match(foldername, name) and not os.path.isfile(name):
             matchedFolder.append(name)
 
-    logger.info("Matched Folders: %s!"%foldername)
+    logger.debug("Matched Folders: %s!"%foldername)
     return matchedFolder
 
 def searchFile(pathname, filename):
@@ -129,7 +132,7 @@ def searchFile(pathname, filename):
     @RETURN:
         - A list of sting representing all matched file names
     '''
-    logger.info("Searching Files: %s..."%filename)
+    logger.debug("Searching Files: %s..."%filename)
 
     matchedFile =[]
     for root, dirs, files in os.walk(pathname):
@@ -138,7 +141,7 @@ def searchFile(pathname, filename):
                 file_name = os.path.abspath(os.path.join(root, file))
                 matchedFile.append(file_name)
 
-    logger.info("Matched Files: %s!"%matchedFile)
+    logger.debug("Matched Files: %s!"%matchedFile)
     return matchedFile
 
 def searchLog(starting_time):
