@@ -6,7 +6,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.append(BASE_DIR)
 import lib.logger
 
-logger = lib.logger.logger("main")
+logger = lib.logger.logger("lib")
 
 def getMD5(file_path):
     '''
@@ -67,8 +67,7 @@ def copyFolder(src, dst, full=True, md5file="./lib/md5.data"):
         logger.warn("src Folder not found: %s..."%src)
         return
     if not os.path.isdir(dst):
-        logger.warn("dst Folder not found!")
-        logger.debug("New Folder Created: %s..."%src)
+        logger.info("New Version Found!: %s"%src)
         os.makedirs(dst)
 
     md5new = {}
@@ -96,7 +95,7 @@ def copyFolder(src, dst, full=True, md5file="./lib/md5.data"):
             if not os.path.isdir(dst_name):
                 os.makedirs(dst_name)
                 # logger.info("Copying New folder: "+dst_name)
-                logger.info("New Crash Found!: "+dst_name)
+                logger.info("New Crash Found!: "+src_name)
             copyFolder(src_name, dst_name)
 
     logger.info("Copy Finished! from "+src+" to "+dst)

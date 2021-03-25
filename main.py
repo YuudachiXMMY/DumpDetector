@@ -10,8 +10,6 @@ sys.path.append(BASE_DIR)
 import lib.sysUtils as u
 import lib.logger
 
-logger = lib.logger.logger("main")
-
 # Show Usage demo of this program
 DEMO = False
 
@@ -45,9 +43,13 @@ def copy(src, dst, keyword="", fullCopy=True):
     for name in u.searchFolder(src, keyword):
         src_name = os.path.join(src, name)
         dst_name = os.path.join(dst, name)
-        if not os.path.isdir(dst_name):
-            logger.info("New Version Found!: "+dst_name)
-        u.copyFolder(name, dst, full=fullCopy)
+        print("src %s"%src)
+        print("dst %s"%dst)
+        print("src_name %s"%src_name)
+        print("dst_name %s"%dst_name)
+        print("name %s"%name)
+        print("*"*100)
+        u.copyFolder(src_name, dst_name, full=fullCopy)
 
 def main():
     '''
