@@ -1,5 +1,6 @@
 import os, sys, subprocess, re
 import shutil
+import pickle as p
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.append(BASE_DIR)
@@ -7,7 +8,7 @@ import lib.logger
 
 logger = lib.logger.logger("utils")
 
-def get_MD5(file_path):
+def getMD5(file_path):
     '''
     通过校验MD5 判断B内的文件与A 不同
 
@@ -19,40 +20,79 @@ def get_MD5(file_path):
     file_md5 = files_md5.replace('MD5 (%s) = ' % file_path, '')
     return file_md5
 
-def copyFolder(start, dest):
+def getMD5Dump(md5file):
     '''
-    Move all files and folders from start folder to dest folder.
+    '''
+    with open(md5file, "rb") as f:
+        return p.load(f)
+
+def addMD5Dump(src, dst, md5file):
+    '''
+    '''
+    md5new = {}
+    md5new[dst] = getMD5(src)
+
+    with open(md5file, "wb") as f:
+        p.dump(md5new, f)
+
+def isInMD5Dump(src, dst, md5file):
+    '''
+    Check whether the src and dst exist to be the same in md5file
 
     @param:
-        - start - a folder names to be copied.
-        - dest - a folder names to copy from start to.
+        - src - a folder names to be copied.
+        - dst - a folder names to copy from src to.
+        - full - True to fully copy; otherwise, copy increased file (default to True).
+        - md5file - a dump file that can be utilized to check md5 codes.
     '''
-    logger.info("Copying Folders: %s..."%start)
+    md5new = {}
+    md5new[dst] = getMD5(src)
+    md5old = getMD5Dump(md5file)
 
-    if not os.path.isdir(start):
-        logger.warn("Start Folder not found: %s..."%start)
+    return md5old.get(dst) == md5new[dst]
+
+def copyFolder(src, dst, full=True, md5file="./lib/md5.data"):
+    '''
+    Move all files and folders from src folder to dst folder.
+
+    @param:
+        - src - a folder names to be copied.
+        - dst - a folder names to copy from src to.
+        - full - True to fully copy; otherwise, copy increased file (default to True).
+        - md5file - a dump file that can be utilized to check md5 codes (default file:"./lib/md5.data").
+    '''
+    logger.info("Copying Folders: %s..."%src)
+
+    if not os.path.isdir(src):
+        logger.warn("src Folder not found: %s..."%src)
         return
-    if not os.path.isdir(dest):
-        logger.warn("Dest Folder not found!")
-        logger.info("New Folder Created: %s..."%start)
-        os.makedirs(dest)
+    if not os.path.isdir(dst):
+        logger.warn("dst Folder not found!")
+        logger.info("New Folder Created: %s..."%src)
+        os.makedirs(dst)
 
-    for files in os.listdir(start):
-        start_name = os.path.join(start, files)
-        dest_name = os.path.join(dest, files)
-        if os.path.isfile(start_name):
-            if os.path.isfile(dest_name):
+    md5new = {}
+
+    for files in os.listdir(src):
+        src_name = os.path.join(src, files)
+        dst_name = os.path.join(dst, files)
+        if os.path.isfile(src_name):
+            addMD5Dump(src_name, dst_name, md5file)
+            if os.path.isfile(dst_name):
                 # (Optional) To check the MD% code matched
-                if get_MD5(start_name) != get_MD5(dest_name):
-                    shutil.copy(start_name, dest_name)
+                if getMD5(src_name) != getMD5(dst_name) or \
+                    (not full and not isInMD5Dump(src_name, dst_name, md5file)):
+                    shutil.copy(src_name, dst_name)
             else:
-                shutil.copy(start_name, dest_name)
+                if full or \
+                    (not full and not isInMD5Dump(src_name, dst_name, md5file)):
+                    shutil.copy(src_name, dst_name)
         else:
-            if not os.path.isdir(dest_name):
-                os.makedirs(dest_name)
-            copyFolder(start_name, dest_name)
+            if not os.path.isdir(dst_name):
+                os.makedirs(dst_name)
+            copyFolder(src_name, dst_name)
 
-    logger.info("Copy Finished! from "+start+" to "+dest)
+    logger.info("Copy Finished! from "+src+" to "+dst)
     # TODO: cmd command=> xcopy /s/e "D:\A_FOLDER" "E:\B_FOLDER\"
 
 def searchFolder(pathname, foldername, recursive=False):
@@ -116,12 +156,3 @@ def searchLog(starting_time):
             return f
         c = c + datetime.timedelta(minutes=1)
     return f
-
-def main():
-    '''
-    '''
-    print("NOTHING TO BE RUN")
-    pass
-
-if __name__ == '__main__':
-    main()

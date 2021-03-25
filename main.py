@@ -1,4 +1,5 @@
 import os, sys
+
 import argparse
 
 from smb.SMBConnection import SMBConnection
@@ -27,7 +28,7 @@ def CMDParam():
                             (default: show a user interface)")
     ARGS = parser.parse_args() == 1
 
-def copy(start, dest, keyword=""):
+def copy(start, dest, keyword="", fullCopy=True):
     '''
     Copy all matched files and folders from start to dest
 
@@ -35,9 +36,10 @@ def copy(start, dest, keyword=""):
         - start - a folder names to be copied.
         - dest - a folder names to copy from start to.
         - keyword - a keyword to operate all matched target(can be regular expression).
+        - full - True to fully copy; otherwise, copy increased file (default to True).
     '''
     for name in u.searchFolder(start, keyword):
-        u.copyFolder(name, dest)
+        u.copyFolder(name, dest, full=fullCopy)
 
 def main():
     '''
@@ -53,10 +55,12 @@ def main():
         copy("A:\Dumps", "a", "AMDVer_27_20_14527_2002")
 
     while(True):
-        source = input("Input source folder to be copied: ")
-        dest = input("Input dest folder to copy to: ")
+        src = input("Input source folder to be copied: ")
+        dst = input("Input dest folder to copy to: ")
         keyword = input("Input keyword to search(can be Regular Expression): ")
-        copy(source, dest, keyword)
+        fullCopy = int(input("Increasing Copy?(\"1\":True; \"0\":False): "))==1
+        copy(src, dst, keyword, fullCopy)
+        print("Finished!\n")
 
 if __name__ == "__main__":
     main()
