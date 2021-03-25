@@ -76,11 +76,12 @@ def copyFolder(src, dst, full=True, md5file="./lib/md5.data"):
     for files in os.listdir(src):
         src_name = os.path.join(src, files)
         dst_name = os.path.join(dst, files)
+        print(src, dst, files)
         if os.path.isfile(src_name):
             addMD5Dump(src_name, dst_name, md5file)
             if os.path.isfile(dst_name):
                 # (Optional) To check the MD% code matched
-                if getMD5(src_name) != getMD5(dst_name) or \
+                if (full and getMD5(src_name) != getMD5(dst_name)) or \
                     (not full and not isInMD5Dump(src_name, dst_name, md5file)):
                     shutil.copy(src_name, dst_name)
             else:
