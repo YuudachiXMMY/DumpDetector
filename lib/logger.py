@@ -32,7 +32,7 @@ def logger(logName, dir=''):
         fh = logging.FileHandler(log_path + "_" + logName + '.log', mode='w')
         fh.setLevel(logging.INFO) # 输出到file的log等级的开关
         ch = logging.StreamHandler()
-        ch.setLevel(logging.DEBUG)  # 输出到console的log等级的开关
+        ch.setLevel(logging.INFO)  # 输出到console的log等级的开关
         # 第三步，定义handler的输出格式
         formatter = logging.Formatter("%(asctime)s %(message)s")
         fh.setFormatter(formatter)

@@ -72,6 +72,7 @@ def copyFolder(src, dst, full=True, md5file="./lib/md5.data"):
     if not os.path.isdir(dst):
         logger.info("New Version Found!: %s"%src)
         os.makedirs(dst)
+        dbTable = db[src]
 
     md5new = {}
 
@@ -88,12 +89,22 @@ def copyFolder(src, dst, full=True, md5file="./lib/md5.data"):
                     shutil.copy(src_name, dst_name)
                     # logger.info("Copied file: "+dst_name)
                     logger.info(dst_name)
+                    db[src].insert(dict(
+                        src_path=src,
+                        dst_path=src,
+                        file_name=files
+                    ))
             else:
                 if full or \
                     (not full and not isInMD5Dump(src_name, dst_name, md5file)):
                     shutil.copy(src_name, dst_name)
                     # logger.info("Copied file: "+dst_name)
                     logger.info(dst_name)
+                    db[src].insert(dict(
+                        src_path=src,
+                        dst_path=src,
+                        file_name=files
+                    ))
         else:
             if not os.path.isdir(dst_name):
                 os.makedirs(dst_name)
@@ -148,20 +159,3 @@ def searchFile(pathname, filename):
 
     logger.debug("Matched Files: %s!"%matchedFile)
     return matchedFile
-
-def searchLog(starting_time):
-    ''' TODO: TEMPLATE
-    Search for Benchmark result under "{DOCUMENT}/SniperEliteV2_Benchmark"
-    - return a LIST of .txt log names, which represents success in benchmarking
-    - return [], which represents failure to benchmark
-    '''
-    f = []
-    c = starting_time
-    while(c < datetime.datetime.now()):
-        cur_time = ( c ).strftime("%Y-%m-%d__%H-%M")
-        res = utils.searchFile("{DOCUMENT_ROOT}//{GAME_DIRECTORY}//".format(DOCUMENT_ROOT=DOCUMENT_ROOT, GAME_DIRECTORY=GAME_DIRECTORY), "SEV2__%s.txt"%(cur_time))
-        if res:
-            f.extend(res)
-            return f
-        c = c + datetime.timedelta(minutes=1)
-    return f

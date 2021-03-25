@@ -43,12 +43,6 @@ def copy(src, dst, keyword="", fullCopy=True):
     for name in u.searchFolder(src, keyword):
         src_name = os.path.join(src, name)
         dst_name = os.path.join(dst, name)
-        print("src %s"%src)
-        print("dst %s"%dst)
-        print("src_name %s"%src_name)
-        print("dst_name %s"%dst_name)
-        print("name %s"%name)
-        print("*"*100)
         u.copyFolder(src_name, dst_name, full=fullCopy)
 
 def main():
