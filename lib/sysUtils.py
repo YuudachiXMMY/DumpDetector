@@ -2,11 +2,14 @@ import os, sys, subprocess, re
 import shutil
 import pickle as p
 
+import dataset
+
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.append(BASE_DIR)
 import lib.logger
 
 logger = lib.logger.logger("lib")
+db = dataset.connect('sqlite:///database/main.db')
 
 def getMD5(file_path):
     '''
