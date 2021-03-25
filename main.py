@@ -64,17 +64,18 @@ def main():
         copy(src, dst, keyword, fullCopy)
         print("Finished!\n")
 
-    Auto_Program = int(input("Start with Auto Program?(\"1\":True; \"0\":False):"))==1
-    if Auto_Program:
-        src = input("Input source folder to be copied: ")
-        dst = input("Input dest folder to copy to: ")
-        keyword = input("Input keyword to search(can be Regular Expression): ")
-        fullCopy = int(input("Increasing Copy?(\"1\":True; \"0\":False): "))==1
-        timer = int(input("Auto-Syncing Time Period (in seconds):"))
-        while True:
-            copy(src, dst, keyword, fullCopy)
-            print("Waiting for %s seconds..."%timer)
-            time.sleep(timer)
+    # Auto_Program = int(input("Start with Auto Program?(\"1\":True; \"0\":False):"))==1
+    # if Auto_Program:
+    print("Running Auto-Sync\n")
+    src = input("Input source folder to be copied: ")
+    dst = input("Input dest folder to copy to: ")
+    keyword = input("Input keyword to search(can be Regular Expression): ")
+    fullCopy = int(input("Increasing Copy?(\"1\":True; \"0\":False): "))==1
+    timer = int(input("Auto-Syncing Time Period (in seconds):"))
+    while True:
+        copy(src, dst, keyword, fullCopy)
+        print("Waiting for %s seconds..."%timer)
+        time.sleep(timer)
 
     print("Program finished!")
     input("PRESS ANYKEY TO QUIT:")
