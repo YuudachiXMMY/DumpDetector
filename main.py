@@ -53,7 +53,7 @@ def main():
         copy(".", "a", "lib")
 
         # Copy folders from server(mapped network device)
-        copy("A:\Dumps", "a", "AMDVer_27_20_14527_2002")
+        copy("A:\Dumps", "114514", "AMDVer_11_45_14114_5140")
 
     Manual_Program = int(input("Start with Manually Input Program?(\"1\":True; \"0\":False):"))==1
     while Manual_Program:
