@@ -68,6 +68,20 @@ def loggingDB(src, dst):
                 logger.info("New Version Found!: %s"%tar)
                 dbTable = db[tar]
                 return dbTable
+            else:
+                base, ver = os.path.split(base)
+                if base == "." or \
+                    base == "":
+                    logger.info("New Crash Found!: %s"%tar)
+        else:
+            base, ver = os.path.split(path)
+            if base != "." or \
+                base != "":
+                ver, crash = os.path.split(base)
+                if base == "." or \
+                    base == "":
+                    print("[DST]",dst)
+            pass
     pass
 
 
@@ -120,7 +134,6 @@ def copyFolder(src, dst, full=True, md5file="./lib/md5.data"):
                 os.makedirs(dst_name)
             copyFolder(src_name, dst_name)
 
-    logger.info("Copy Finished! from "+src+" to "+dst)
     # TODO: cmd command=> xcopy /s/e "D:\A_FOLDER" "E:\B_FOLDER\"
 
 def searchFolder(pathname, foldername, recursive=False):

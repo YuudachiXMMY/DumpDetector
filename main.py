@@ -46,6 +46,7 @@ def copy(src, dst, keyword="", fullCopy=True):
         src_name = os.path.join(src, name)
         dst_name = os.path.join(dst, name)
         u.copyFolder(src_name, dst_name, full=fullCopy)
+        print("Copy Finished! from "+src_name+" to "+dst_name)
 
 def main():
     '''

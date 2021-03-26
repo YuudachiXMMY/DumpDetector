@@ -68,6 +68,11 @@ def loggingDB(src, dst):
                 logger.info("New Version Found!: %s"%tar)
                 dbTable = db[tar]
                 return dbTable
+            else:
+                base, ver = os.path.split(base)
+                if base == "." or \
+                    base == "":
+                    logger.info("New Crash Found!: %s"%tar)
     pass
 
 
