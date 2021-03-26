@@ -40,6 +40,8 @@ def copy(src, dst, keyword="", fullCopy=True):
         - keyword - a keyword to operate all matched target(can be regular expression).
         - full - True to fully copy; otherwise, copy increased file (default to True).
     '''
+    if not os.path.isdir(dst):
+        os.makedirs(dst)
     for name in u.searchFolder(src, keyword):
         src_name = os.path.join(src, name)
         dst_name = os.path.join(dst, name)
